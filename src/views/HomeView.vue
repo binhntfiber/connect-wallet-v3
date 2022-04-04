@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import ConnectComponent from "@/components/ConnectComponent.vue";
+// import ConnectComponent from "@/components/ConnectComponent.vue";
 
 const show = ref(false);
 const onError = (error: Error) => {
@@ -9,7 +9,7 @@ const onError = (error: Error) => {
 </script>
 <template>
   <div>
-    <button @click="show = true">Open modal connect</button>
+    <button @click="show = true">Open modal connect {{ show }}</button>
   </div>
   <ConnectComponent @error="onError" :chain="250" v-model="show" />
 </template>

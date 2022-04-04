@@ -11,7 +11,7 @@ const props = defineProps({
     type: Number,
     default: CHAIN_ID.FANTOM_OPERA,
   },
-  value: {
+  modelValue: {
     type: Boolean,
     default: false,
   },
@@ -44,7 +44,7 @@ const isMobile = computed(() =>
 );
 const showModal = computed({
   get() {
-    return props.value;
+    return props.modelValue;
   },
   set(val) {
     emit("update:modelValue", val);
