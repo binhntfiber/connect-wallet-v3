@@ -33,6 +33,8 @@ export const CHAIN_ID = {
   AVAX_MAINNET: 43114,
   HUOBI_TESTNET: 256,
   HUOBI_MAINNET: 128,
+  NAHMII_TESTNET: 5553,
+  NAHMII_MAINNET: 5551,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -93,5 +95,25 @@ export const CHAIN_INFO: ChainInfo = {
     name: "Heco Mainnet",
     nativeCurrency: { name: "HT", symbol: "HT", decimals: 18 },
     rpcUrl: "https://http-mainnet.hecochain.com/",
+  },
+  [CHAIN_ID.NAHMII_MAINNET]: {
+    explorer: "https://explorer.nahmii.io/",
+    name: "Nahmii Mainnet",
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrl: "https://l2.nahmii.io/",
+  },
+  [CHAIN_ID.NAHMII_TESTNET]: {
+    explorer: "https://explorer.testnet.nahmii.io/",
+    name: "Nahmii Testnet",
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrl: "https://l2.testnet.nahmii.io/",
   },
 };

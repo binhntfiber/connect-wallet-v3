@@ -11,5 +11,5 @@ const onError = (error: Error) => {
   <div>
     <button @click="show = true">Open modal connect {{ show }}</button>
   </div>
-  <ConnectComponent @error="onError" :chain="250" v-model="show" />
+  <ConnectComponent @error="onError" :chain="5553" v-model="show" />
 </template>
