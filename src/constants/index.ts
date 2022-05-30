@@ -35,6 +35,8 @@ export const CHAIN_ID = {
   HUOBI_MAINNET: 128,
   NAHMII_TESTNET: 5553,
   NAHMII_MAINNET: 5551,
+  ROSE_TESTNET: 42261,
+  ROSE_MAINNET: 42262,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -115,5 +117,25 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://l2.testnet.nahmii.io/",
+  },
+  [CHAIN_ID.ROSE_TESTNET]: {
+    explorer: "https://testnet.explorer.emerald.oasis.dev/",
+    name: "Rose Testnet",
+    nativeCurrency: {
+      name: "ROSE",
+      symbol: "ROSE",
+      decimals: 18,
+    },
+    rpcUrl: "https://testnet.emerald.oasis.dev/",
+  },
+  [CHAIN_ID.ROSE_MAINNET]: {
+    explorer: "https://explorer.emerald.oasis.dev/",
+    name: "Rose Mainnet",
+    nativeCurrency: {
+      name: "ROSE",
+      symbol: "ROSE",
+      decimals: 18,
+    },
+    rpcUrl: "https://emerald.oasis.dev/",
   },
 };
