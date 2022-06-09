@@ -37,6 +37,8 @@ export const CHAIN_ID = {
   NAHMII_MAINNET: 5551,
   ROSE_TESTNET: 42261,
   ROSE_MAINNET: 42262,
+  CUBE_MAINNET: 1818,
+  CUBE_TESTNET: 1819,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -137,5 +139,25 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://emerald.oasis.dev/",
+  },
+  [CHAIN_ID.CUBE_MAINNET]: {
+    explorer: "https://cubescan.network",
+    name: "Cube Mainnet",
+    nativeCurrency: {
+      name: "CUBE",
+      symbol: "CUBE",
+      decimals: 18,
+    },
+    rpcUrl: "https://http-mainnet.cube.network",
+  },
+  [CHAIN_ID.CUBE_TESTNET]: {
+    explorer: "https://testnet.cubescan.network",
+    name: "Cube Testnet",
+    nativeCurrency: {
+      name: "CUBE",
+      symbol: "CUBE",
+      decimals: 18,
+    },
+    rpcUrl: "https://http-testnet.cube.network",
   },
 };
