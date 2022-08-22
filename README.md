@@ -1,6 +1,6 @@
-# connect-wallet-v3
+# Quick connect package for EVM
 
-This template should help get you started developing with Vue 3 in Vite.
+This template should help get you started developing dapp with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
