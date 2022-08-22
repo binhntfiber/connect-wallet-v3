@@ -39,6 +39,8 @@ export const CHAIN_ID = {
   ROSE_MAINNET: 42262,
   CUBE_MAINNET: 1818,
   CUBE_TESTNET: 1819,
+  DOGE_TESTNET: 568,
+  DOGE_MAINNET: 2000,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -159,5 +161,25 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://http-testnet.cube.network",
+  },
+  [CHAIN_ID.DOGE_TESTNET]: {
+    explorer: "https://explorer-testnet.dogechain.dog",
+    name: "Doge Testnet",
+    nativeCurrency: {
+      name: "Doge",
+      symbol: "WDOGE",
+      decimals: 18,
+    },
+    rpcUrl: "https://rpc-testnet.dogechain.dog",
+  },
+  [CHAIN_ID.DOGE_MAINNET]: {
+    explorer: "https://explorer.dogechain.dog",
+    name: "Doge Mainnet",
+    nativeCurrency: {
+      name: "Doge",
+      symbol: "WDOGE",
+      decimals: 18,
+    },
+    rpcUrl: "https://rpc.dogechain.dog",
   },
 };
