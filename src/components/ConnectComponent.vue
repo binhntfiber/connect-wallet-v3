@@ -80,11 +80,14 @@ const addEthereumChain = async (option: ChainOption) => {
   });
 };
 
-const connectToCorrectChainMetamask = async (option: ChainOption) => {
+const connectToCorrectChainMetamask = async (
+  option: ChainOption,
+  chain?: number
+) => {
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: toHex(props.chain) }],
+      params: [{ chainId: toHex(chain || props.chain) }],
     });
   } catch (error) {
     console.debug({ error });
@@ -100,13 +103,14 @@ const connectToCorrectChainMetamask = async (option: ChainOption) => {
 
 const connectMetamask = async (chain: number) => {
   const chainInfo = CHAIN_INFO[chain];
+
   if (!window.ethereum) {
     throw new Error("No provider was found");
   }
   const provider = window.ethereum;
   const chainId = Number(await provider.request({ method: "eth_chainId" }));
   if (chainId !== chain) {
-    await connectToCorrectChainMetamask(chainInfo);
+    await connectToCorrectChainMetamask(chainInfo, chain);
   }
   const [address] = await window.ethereum //
     .request({ method: "eth_requestAccounts" });
