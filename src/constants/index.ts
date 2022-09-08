@@ -41,6 +41,7 @@ export const CHAIN_ID = {
   CUBE_TESTNET: 1819,
   DOGE_TESTNET: 568,
   DOGE_MAINNET: 2000,
+  ZKSYNC_TESTNET: 280,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -181,5 +182,15 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://rpc.dogechain.dog",
+  },
+  [CHAIN_ID.ZKSYNC_TESTNET]: {
+    explorer: "https://zksync2-testnet.zkscan.io/",
+    name: "ZkSync Testnet",
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrl: "https://zksync2-testnet.zksync.dev",
   },
 };
