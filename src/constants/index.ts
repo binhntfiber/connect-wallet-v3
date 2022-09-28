@@ -42,6 +42,8 @@ export const CHAIN_ID = {
   DOGE_TESTNET: 568,
   DOGE_MAINNET: 2000,
   ZKSYNC_TESTNET: 280,
+  GOERLI: 5,
+  ETHPOW: 10001,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -184,7 +186,7 @@ export const CHAIN_INFO: ChainInfo = {
     rpcUrl: "https://rpc.dogechain.dog",
   },
   [CHAIN_ID.ZKSYNC_TESTNET]: {
-    explorer: "https://zksync2-testnet.zkscan.io/",
+    explorer: "https://zksync2-testnet.zkscan.io",
     name: "ZkSync Testnet",
     nativeCurrency: {
       name: "ETH",
@@ -192,5 +194,25 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://zksync2-testnet.zksync.dev",
+  },
+  [CHAIN_ID.GOERLI]: {
+    explorer: "https://goerli.etherscan.io",
+    name: "Goerli Testnet",
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+  },
+  [CHAIN_ID.ETHPOW]: {
+    explorer: "mainnet.ethwscan.com",
+    name: "ETHW-Mainnet",
+    nativeCurrency: {
+      name: "ETHW",
+      symbol: "ETHW",
+      decimals: 18,
+    },
+    rpcUrl: "https://mainnet.ethereumpow.org",
   },
 };
