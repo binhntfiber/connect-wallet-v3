@@ -44,6 +44,7 @@ export const CHAIN_ID = {
   ZKSYNC_TESTNET: 280,
   GOERLI: 5,
   ETHPOW: 10001,
+  SKALE_TESNET: 1250011826715177,
 };
 
 export const CHAIN_INFO: ChainInfo = {
@@ -214,5 +215,11 @@ export const CHAIN_INFO: ChainInfo = {
       decimals: 18,
     },
     rpcUrl: "https://mainnet.ethereumpow.org",
+  },
+  [CHAIN_ID.SKALE_TESNET]: {
+    explorer: "https://stocky-pleione.explorer.staging-v2.skalenodes.com",
+    name: "Skale Testnet",
+    nativeCurrency: { name: "Skale", symbol: "sFUEL", decimals: 18 },
+    rpcUrl: "https://staging-v2.skalenodes.com/v1/stocky-pleione",
   },
 };
