@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, nextTick, ref } from "vue";
-import type { ChainOption } from "@/types";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import FuseNetworkWalletConnectProvider from "fuse-walletconnect-web3-provider";
-import Connector from "./Connector.vue";
-import { CHAIN_ID, CHAIN_INFO, availableConnectors } from "@/constants/index";
+import { computed, onMounted, nextTick, ref } from 'vue'
+import type { ChainOption } from '@/types'
+import type { PropType } from 'vue'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import FuseNetworkWalletConnectProvider from 'fuse-walletconnect-web3-provider'
+import Connector from './Connector.vue'
+import { CHAIN_ID, CHAIN_INFO, availableConnectors } from '@/constants/index'
 
 const props = defineProps({
   chain: {
@@ -17,55 +18,66 @@ const props = defineProps({
   },
   cachedConnector: {
     type: String,
-    default: "",
+    default: '',
   },
   metamaskMobileDappLink: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+  chainData: {
+    type: Object as PropType<ChainOption>,
+    default: undefined,
+  },
+})
 
 const emit = defineEmits([
-  "update:modelValue",
-  "startLoading",
-  "endLoading",
-  "response",
-  "error",
-]);
+  'update:modelValue',
+  'startLoading',
+  'endLoading',
+  'response',
+  'error',
+])
 
-const loading = ref(false);
+const loading = ref(false)
 
-const windowObj = ref(window);
+const windowObj = ref(window)
 
 const isMobile = computed(() =>
   /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   )
-);
+)
 const showModal = computed({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(val) {
-    emit("update:modelValue", val);
+    emit('update:modelValue', val)
   },
-});
+})
 const availableConns = computed(() => {
   return availableConnectors.map((el) => {
-    if (el.type === "metamask-mobile") {
+    if (el.type === 'metamask-mobile') {
       return {
         ...el,
         href: props.metamaskMobileDappLink,
-      };
+      }
     }
-    return el;
-  });
-});
+    return el
+  })
+})
 
-const toHex = (chainIdDec: number) => `0x${chainIdDec.toString(16)}`;
+const toConnectChainInfo = computed(() => {
+  if (props.chainData) {
+    return props.chainData
+  }
+  return CHAIN_INFO[props.chain]
+})
+
+const toHex = (chainIdDec: number) => `0x${chainIdDec.toString(16)}`
 const addEthereumChain = async (option: ChainOption) => {
   await window.ethereum.request({
-    method: "wallet_addEthereumChain",
+    method: 'wallet_addEthereumChain',
     params: [
       {
         chainId: toHex(props.chain),
@@ -77,8 +89,8 @@ const addEthereumChain = async (option: ChainOption) => {
         blockExplorerUrls: [option.explorer],
       },
     ],
-  });
-};
+  })
+}
 
 const connectToCorrectChainMetamask = async (
   option: ChainOption,
@@ -86,44 +98,44 @@ const connectToCorrectChainMetamask = async (
 ) => {
   try {
     await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
+      method: 'wallet_switchEthereumChain',
       params: [{ chainId: toHex(chain || props.chain) }],
-    });
+    })
   } catch (error) {
-    console.debug({ error });
+    console.debug({ error })
     // eslint-disable-next-line
     if ((error as any).code === 4902) {
       // Error switch chain
-      await addEthereumChain(option);
+      await addEthereumChain(option)
     } else {
-      throw error;
+      throw error
     }
   }
-};
+}
 
 const connectMetamask = async (chain: number) => {
-  const chainInfo = CHAIN_INFO[chain];
+  const chainInfo = toConnectChainInfo.value
 
   if (!window.ethereum) {
-    throw new Error("No provider was found");
+    throw new Error('No provider was found')
   }
-  const provider = window.ethereum;
-  const chainId = Number(await provider.request({ method: "eth_chainId" }));
+  const provider = window.ethereum
+  const chainId = Number(await provider.request({ method: 'eth_chainId' }))
   if (chainId !== chain) {
-    await connectToCorrectChainMetamask(chainInfo, chain);
+    await connectToCorrectChainMetamask(chainInfo, chain)
   }
   const [address] = await window.ethereum //
-    .request({ method: "eth_requestAccounts" });
+    .request({ method: 'eth_requestAccounts' })
 
   return {
     account: address,
     provider,
     chainId: chain,
-  };
-};
+  }
+}
 
 const connectWalletConnect = async (chain: number) => {
-  const rpcUrl = CHAIN_INFO[chain].rpcUrl;
+  const rpcUrl = toConnectChainInfo.value.rpcUrl
   const provider = [CHAIN_ID.FUSE_MAINNET, CHAIN_ID.FUSE_TESTNET].includes(
     chain
   )
@@ -139,88 +151,89 @@ const connectWalletConnect = async (chain: number) => {
         },
         qrcode: true,
         pollingInterval: 15000,
-      });
+      })
   // ensure that the uri is going to be available, and emit an event if there's a new uri
   if (!provider.wc.connected) {
-    await provider.wc.createSession({ chainId: chain });
+    await provider.wc.createSession({ chainId: chain })
   }
   // eslint-disable-next-line
   return new Promise(async (resolve, reject) => {
     // connection refused in wallet
     try {
-      const accounts = await provider.enable();
+      const accounts = await provider.enable()
 
-      const chainId = Number(await provider.request({ method: "eth_chainId" }));
+      const chainId = Number(await provider.request({ method: 'eth_chainId' }))
       if (chainId !== chain) {
-        reject("Unsupported chain");
+        reject('Unsupported chain')
       }
 
       resolve({
         provider,
         chainId,
         account: accounts[0],
-      });
+      })
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
-};
+  })
+}
 
 const connectToWallet = async (id: string) => {
-  if (loading.value) return;
+  if (loading.value) return
   try {
-    loading.value = true;
-    emit("startLoading");
+    loading.value = true
+    emit('startLoading')
     const connectors = {
       metamask: connectMetamask,
       walletconnect: connectWalletConnect,
-    };
-    const connector = (connectors as any)[id]; // eslint-disable-line
-    const response = await connector(props.chain);
-    emit("response", {
+    }
+    const connector = (connectors as any)[id] // eslint-disable-line
+    const response = await connector(props.chain)
+    emit('response', {
       ...response,
       id,
       connect: connector,
-    });
+    })
   } catch (error) {
-    loading.value = false;
+    loading.value = false
 
-    emit("error", error);
+    emit('error', error)
   } finally {
-    showModal.value = false;
-    loading.value = false;
-    emit("endLoading");
+    showModal.value = false
+    loading.value = false
+    emit('endLoading')
   }
-};
+}
 
 onMounted(async () => {
-  await nextTick();
+  await nextTick()
   if (props.cachedConnector) {
-    connectToWallet(props.cachedConnector);
+    connectToWallet(props.cachedConnector)
   } else if (window.ethereum && window.ethereum.isMetaMask && isMobile.value) {
-    connectToWallet("metamask");
+    connectToWallet('metamask')
   }
-});
+})
 </script>
 
 <template>
   <transition name="modal" v-if="showModal">
-    <div class="connect-modal-mask" @click.stop="showModal = false">
+    <div class="modal-container">
+      <div class="connect-modal-mask" @click.stop="showModal = false"></div>
       <div class="connect-modal-wrapper">
         <div class="connect-modal-container">
           <div class="connect-modal-body">
-            <div v-for="connector in availableConns" :key="connector.type">
+            <template v-for="connector in availableConns" :key="connector.type">
               <template
                 v-if="['metamask', 'metamask-mobile'].includes(connector.type)"
               >
-                <div v-if="windowObj.ethereum">
+                <template v-if="windowObj.ethereum">
                   <Connector
                     v-if="!connector.mobileOnly"
                     @connect="connectToWallet"
                     :connector="connector"
                   />
-                </div>
-                <div v-else>
+                </template>
+                <template v-else>
                   <template v-if="isMobile">
                     <a
                       v-if="connector.href && !windowObj.ethereum"
@@ -228,12 +241,12 @@ onMounted(async () => {
                       ><Connector :connector="connector"
                     /></a>
                   </template>
-                </div>
+                </template>
               </template>
               <template v-else>
                 <Connector @connect="connectToWallet" :connector="connector" />
               </template>
-            </div>
+            </template>
           </div>
         </div>
       </div>
@@ -280,16 +293,24 @@ onMounted(async () => {
   }
 }
 
-.connect-modal-mask {
+.modal-container {
   position: fixed;
-  z-index: 9998;
+  display: table;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.connect-modal-mask {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  display: table;
+  position: fixed;
   transition: opacity 0.3s ease;
+  z-index: 1000;
 }
 
 .connect-modal-wrapper {
@@ -302,7 +323,7 @@ onMounted(async () => {
   max-height: 100%;
   overflow: auto;
   margin: 20px auto;
-
+  z-index: 1000;
   transition: all 0.3s ease;
 }
 
