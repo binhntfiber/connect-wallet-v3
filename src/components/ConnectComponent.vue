@@ -325,6 +325,8 @@ onMounted(async () => {
   margin: 20px auto;
   z-index: 1000;
   transition: all 0.3s ease;
+  z-index: 99999;
+  position: relative;
 }
 
 .connect-modal-body {
